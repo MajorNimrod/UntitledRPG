@@ -1,0 +1,5 @@
+Naming convention for Animated Tiles:
+- L, R, T, B = Left, Right, Top, Bottom
+- C, E, I, R = Corner, Edge, Inverted-Corner, Rounded
+
+Rule tiles can be found under Assets > Tilemap > Rule Tiles
