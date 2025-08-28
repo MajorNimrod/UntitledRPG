@@ -42,33 +42,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Background
+  - name: Ground
     uniqueID: 3602939551
     locked: 0
-  - name: Ground
+  - name: WalkInFront
     uniqueID: 2630650327
     locked: 0
-  - name: WaterSurface
+  - name: Collision
     uniqueID: 2179727887
     locked: 0
-  - name: Shadows
+  - name: Player
     uniqueID: 1028287841
     locked: 0
-  - name: PropsLow
+  - name: WalkBehind
     uniqueID: 3314589601
     locked: 0
-  - name: PropsHigh
-    uniqueID: 4150377751
-    locked: 0
-  - name: Characters
-    uniqueID: 3873934785
-    locked: 0
-  - name: Buildings
+  - name: Decor
     uniqueID: 1026708153
-    locked: 0
-  - name: ForegroundFX
-    uniqueID: 3141101951
-    locked: 0
-  - name: UI
-    uniqueID: 3201087071
     locked: 0

@@ -29,14 +29,13 @@ public class PlayerController : MonoBehaviour
 
     [Header("Animation")]
     private Animator animator;
+    private SpriteRenderer spriteRenderer;
     Vector2 lastNonZeroInput; // for idle facing direction
     static class AnimParams
     {
-        public static readonly int MoveX = Animator.StringToHash("MoveX");
-        public static readonly int MoveY = Animator.StringToHash("MoveY");
-        public static readonly int IsMoving = Animator.StringToHash("IsMoving");
+        public static readonly int IsMoving  = Animator.StringToHash("IsMoving");
         public static readonly int IsRunning = Animator.StringToHash("IsRunning");
-        public static readonly int Speed01 = Animator.StringToHash("Speed01");
+        public static readonly int Speed     = Animator.StringToHash("Speed");
         //Not implemented yet.
         //public static readonly int IsDashing = Animator.StringToHash("IsDashing");
         //public static readonly int InWater = Animator.StringToHash("InWater");
@@ -46,6 +45,11 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (!animator) Debug.LogWarning("Animator missing on Player.");
+        if (!spriteRenderer) Debug.LogWarning("SpriteRenderer missing on Player.");
+
         ValidateAnimatorParams();
     }
 
@@ -63,7 +67,7 @@ public class PlayerController : MonoBehaviour
             BeginDash();
         }
 
-        if (!isRunning && !isDashing && Input.GetKey(KeyCode.LeftShift) && input.sqrMagnitude > 0f)
+        if (!isDashing && Input.GetKey(KeyCode.LeftShift) && input.sqrMagnitude > 0f)
         {
             isRunning = true;
         }
@@ -77,13 +81,9 @@ public class PlayerController : MonoBehaviour
         UpdateAnimatorParams();
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void LateUpdate()
     {
-        if (other.CompareTag("Water")) inWater = true;
-    }
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Water")) inWater = false;
+        HandleSpriteFlip();
     }
 
     void FixedUpdate()
@@ -100,6 +100,7 @@ public class PlayerController : MonoBehaviour
             if (dashTimer <= 0f) isDashing = false;
         }
 
+        // Apply run multiplier for this tick, then clear flag (re-evaluated each Update)
         if (isRunning && !isDashing)
         {
             desired *= runSpeedMultiplier;
@@ -115,11 +116,18 @@ public class PlayerController : MonoBehaviour
             knockbackVel = Vector2.MoveTowards(knockbackVel, Vector2.zero, knockbackDecay * Time.fixedDeltaTime);
         }
 
-        // Final velocity to apply this tick
+        // Final movement
         Vector2 finalVel = desired + knockbackVel;
-
-        // Use MovePosition for smooth, collision-friendly motion
         rb.MovePosition(rb.position + finalVel * Time.fixedDeltaTime);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Water")) inWater = true;
+    }
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Water")) inWater = false;
     }
 
     // Call this from your combat/hit logic
@@ -140,62 +148,41 @@ public class PlayerController : MonoBehaviour
         const float deadzone = 0.1f;
         bool hasMoveInput = input.sqrMagnitude > deadzone * deadzone;
 
-        // Keep last facing for idle
-        if (hasMoveInput) lastNonZeroInput = input;
+        // 0 = walk, 1 = run/dash
+        float targetSpeed01 = (isDashing || (hasMoveInput && Input.GetKey(KeyCode.LeftShift))) ? 1f : 0f;
 
-        Vector2 animDir = isDashing
-            ? (dashDir.sqrMagnitude > 0 ? dashDir : lastNonZeroInput)
-            : (hasMoveInput ? input : lastNonZeroInput);
+        const float speedDamp = 0.16f; // smooth the walk<->run blend
+        animator.SetFloat(AnimParams.Speed, targetSpeed01, speedDamp, Time.deltaTime);
 
-        float speed01 = isRunning ? 1f : 0f;    // 0=walk, 1=run
-        if (isDashing) speed01 = 1f;            // optional: treat dash like "max speed"
-        animator.SetFloat("Speed01", speed01);
-
-        if (animDir.sqrMagnitude > 0f) animDir.Normalize();
-
-        // --- smooth param writes ---
-        const float dirDamp = 0.12f;    // ~120ms smoothing for direction
-        const float speedDamp = 0.16f;  // ~160ms smoothing for walk<->run
-
-        animator.SetFloat(AnimParams.MoveX, animDir.x, dirDamp, Time.deltaTime);
-        animator.SetFloat(AnimParams.MoveY, animDir.y, dirDamp, Time.deltaTime);
-
-        // Walk (0) vs Run (1). Treat dash like max speed if you want.
-        float targetSpeed01 = (isDashing || (isRunning && hasMoveInput)) ? 1f : 0f;
-        animator.SetFloat(AnimParams.Speed01, targetSpeed01, speedDamp, Time.deltaTime);
-
-        // Keep movement tree active when moving or dashing
+        // Keep the move state active whenever there’s input or we’re dashing
         animator.SetBool(AnimParams.IsMoving, hasMoveInput || isDashing);
+    }
 
-        // Optional (Add later)
-        ////animator.SetBool(AnimParams.IsDashing, isDashing);
-        ////animator.SetBool(AnimParams.InWater, inWater);
+    void HandleSpriteFlip()
+    {
+        if (!spriteRenderer) return;
+
+        // Choose facing: dash > input > last known
+        Vector2 dir = isDashing ? dashDir :
+                      (input.sqrMagnitude > 0.01f ? input : lastNonZeroInput);
+
+        if (dir.x < -0.01f) spriteRenderer.flipX = true;   // face left
+        else if (dir.x > 0.01f) spriteRenderer.flipX = false;  // face right
+        // if ~0, keep current facing
     }
 
     void ValidateAnimatorParams()
     {
         if (!animator || animator.runtimeAnimatorController == null) return;
 
-        // name -> required type
-        var required = new (string name, AnimatorControllerParameterType type)[]
-        {
-        ("MoveX",    AnimatorControllerParameterType.Float),
-        ("MoveY",    AnimatorControllerParameterType.Float),
-        ("IsMoving", AnimatorControllerParameterType.Bool),
-        //("IsDashing",AnimatorControllerParameterType.Bool),
-        //("InWater",  AnimatorControllerParameterType.Bool),
-        };
-
         var have = new Dictionary<string, AnimatorControllerParameterType>();
         foreach (var p in animator.parameters) have[p.name] = p.type;
 
-        foreach (var (name, type) in required)
-        {
-            if (!have.TryGetValue(name, out var got))
-                Debug.LogError($"Animator missing parameter '{name}' ({type}).");
-            else if (got != type)
-                Debug.LogError($"Animator parameter '{name}' has wrong type. Expected {type}, got {got}.");
-        }
+        if (!have.TryGetValue("Speed", out var tS) || tS != AnimatorControllerParameterType.Float)
+            Debug.LogWarning("Animator: expected float parameter 'Speed' for the 1D blend tree.");
+
+        if (!have.TryGetValue("IsMoving", out var tM) || tM != AnimatorControllerParameterType.Bool)
+            Debug.LogWarning("Animator: expected bool parameter 'IsMoving' for Idle<->Move transitions.");
     }
 
     void BeginDash()

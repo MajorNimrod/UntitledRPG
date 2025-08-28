@@ -2,7 +2,107 @@ fileFormatVersion: 2
 guid: 82d72659a537ab848b121b4fd523c3b1
 ScriptedImporter:
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: attack
+    second: {fileID: 7400000, guid: 354657d2f79366144a3faf7b9f5b4940, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: axe
+    second: {fileID: 7400000, guid: 0ab79c5d4996f4f4eb0e8dc97decdd79, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: carry
+    second: {fileID: 7400000, guid: 84f68c28870dcdf4abe5554c2127c797, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: casting
+    second: {fileID: 7400000, guid: 2fcb36845b3a56448a18b739c31e8d10, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: caught
+    second: {fileID: 7400000, guid: 451fd3aa85a29044c905418268373849, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: death
+    second: {fileID: 7400000, guid: 9da7d66e233a5754a91cb3dc5ee13cbe, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: dig
+    second: {fileID: 7400000, guid: f5ba1b5774589834481619edf3b14fb2, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: doing
+    second: {fileID: 7400000, guid: aa13b7b5716e98548a738df289595d0a, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: hamering
+    second: {fileID: 7400000, guid: 78668749897d985438a169b82612e155, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: hurt
+    second: {fileID: 7400000, guid: 8ee80feb53913fc45abbbc01b68b40ed, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: idle
+    second: {fileID: 7400000, guid: a200995fd7d7e4e4a901402dbf56204b, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: jump
+    second: {fileID: 7400000, guid: 990b920e561e851439812ecca847cde5, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: mining
+    second: {fileID: 7400000, guid: b4a7dc15a4009014e97a04908a4e8b29, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: reeling
+    second: {fileID: 7400000, guid: 676c9909b98881348985f11a636433d1, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: roll
+    second: {fileID: 7400000, guid: a932ed7d179c8044797db8fb09e9abe8, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: run
+    second: {fileID: 7400000, guid: f6e03d27e76a0fd4a8b6a3fc87019961, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: swimming
+    second: {fileID: 7400000, guid: 85260bbc927fdf9479f16afb40a2b974, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: waiting
+    second: {fileID: 7400000, guid: 5b0854d3c898e454993421d908e30a99, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: walk
+    second: {fileID: 7400000, guid: 78e538131b082da4a965f85caefbd745, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: watering
+    second: {fileID: 7400000, guid: 3e7073512ca96bb4b8be7d9e1344b133, type: 2}
   serializedVersion: 2
   userData: 
   assetBundleName: 
@@ -98,7 +198,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 0
+  platformSettingsDirtyTick: 638914716760943533
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -5856,6 +5956,30 @@ ScriptedImporter:
     overridden: 0
     ignorePlatformSupport: 0
     maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: DefaultTexturePlatform
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Standalone
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 16384
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
