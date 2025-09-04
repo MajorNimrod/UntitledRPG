@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[DefaultExecutionOrder(-900)]
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; private set; }
