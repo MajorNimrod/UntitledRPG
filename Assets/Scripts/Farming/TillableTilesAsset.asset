@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe0bc1ee7a51c42429b829893b22d9eb, type: 3}
+  m_Name: TillableTilesAsset
+  m_EditorClassIdentifier: 
+  tillable:
+  - {fileID: 11400000, guid: 9946ddd6b50a6d04da5cd6702f13d29b, type: 2}
+  - {fileID: 11400000, guid: 768499882912f36448f639286cb28be3, type: 2}
+  - {fileID: 11400000, guid: fbacc44f281d0e849a800f90711313af, type: 2}
