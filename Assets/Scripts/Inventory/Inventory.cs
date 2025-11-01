@@ -18,6 +18,11 @@ public class Inventory
         for (int i = 0; i < capacity; i++) slots.Add(new ItemStack());      // struct of ID and quantity
     }
 
+    public void EnsureInit()
+    {
+        if (slots == null) slots = new List<ItemStack>();
+    }
+
     public bool TryAdd(ItemDefinition def, int qty, out int remainder)
     {
         remainder = qty;
@@ -71,6 +76,8 @@ public class Inventory
             if (s.quantity <= 0) s = new ItemStack();   // incase the quantity doesn't exist after, replace the slot
             slots[i] = s;
         }
+
+        InventoryManager.Instance.NotifyChanged();
         return true;
     }
 
@@ -100,4 +107,6 @@ public class Inventory
             slots[toIndex] = a;
         }
     }
+
+
 }

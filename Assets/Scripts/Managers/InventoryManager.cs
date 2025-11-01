@@ -9,7 +9,7 @@ public class InventoryManager : MonoBehaviour
     public event Action OnInventoryChanged;
 
     [SerializeField] int startingCapacity = 10;
-    public Inventory PlayerInventory { get; private set; }
+    public Inventory PlayerInventory { get; private set; }  // plain class
 
     private void Awake()
     {
@@ -38,6 +38,11 @@ public class InventoryManager : MonoBehaviour
     public void MoveSlot(int from, int to)
     {
         PlayerInventory.Move(from, to);
+        OnInventoryChanged?.Invoke();
+    }
+
+    public void NotifyChanged()
+    {
         OnInventoryChanged?.Invoke();
     }
 }

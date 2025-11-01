@@ -10,6 +10,11 @@ public class PlayerFarmingInteractor : MonoBehaviour
     public Vector2 interactOffset = new(0.6f, 0f);
     public bool showGizmos = true;
 
+    [Header("Plant Test")]
+    [SerializeField] ItemDefinition seedDef;        // assign seed in inspector
+    [SerializeField] int costPerPlant = 1;
+
+
     void Awake()
     {
         if (!interactOrigin) interactOrigin = transform;
@@ -18,13 +23,29 @@ public class PlayerFarmingInteractor : MonoBehaviour
     void Update()
     {
         var sys = FarmingSystem.Instance;
-        if (!sys || !sys.baseMap || !sys.overlayMap) return; // not bound yet
+        if (!sys || !sys.baseMap || !sys.overlayMap) return;
+
+        Vector2 worldPoint = (Vector2)interactOrigin.position + interactOffset;
+        Vector2 playerPos = (Vector2)transform.position;
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Vector2 worldPoint = (Vector2)interactOrigin.position + interactOffset;
-            bool ok = sys.TryTill(worldPoint, (Vector2)transform.position);
+            bool ok = sys.TryTill(worldPoint, playerPos);
             Debug.Log(ok ? "[Interactor] Tilled." : "[Interactor] Till failed.");
+        }
+
+        // New: Plant key (R)
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (!seedDef)
+            {
+                Debug.LogWarning("[Interactor] No seedDef assigned.");
+            }
+            else
+            {
+                bool ok = sys.TryPlant(worldPoint, playerPos, seedDef, costPerPlant);
+                Debug.Log(ok ? "[Interactor] Planted." : "[Interactor] Plant failed.");
+            }
         }
     }
 
